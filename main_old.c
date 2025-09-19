@@ -44,13 +44,13 @@ static char VERSION[] = "XX.YY.ZZ";
 #include <getopt.h>
 
 
-#include "../ws_lib/clk.h"
-#include "../ws_lib/gpio.h"
-#include "../ws_lib/dma.h"
-#include "../ws_lib/pwm.h"
-#include "../ws_lib/version.h"
+#include "clk.h"
+#include "gpio.h"
+#include "dma.h"
+#include "pwm.h"
+#include "version.h"
 
-#include "../ws_lib/ws2811.h"
+#include "ws2811.h"
 
 
 #define ARRAY_SIZE(stuff)       (sizeof(stuff) / sizeof(stuff[0]))
@@ -186,14 +186,6 @@ void matrix_bottom(void)
             matrix[dotspos[i] + (height - 1) * width] = dotcolors[i];
         }
     }
-}
-
-void individual_test(void) {
-	for(int i = 0; i < led_count/3; i++) {
-		for(int j = 0; j < 3; j++) {
-			matrix[(i*3)+j] = dotcolors_rgbw[(i*2)%7];	
-		} 
-	}
 }
 
 static void ctrl_c_handler(int signum)
@@ -400,10 +392,9 @@ int main(int argc, char *argv[])
 
     while (running)
     {
-        //matrix_raise();
-        //matrix_bottom();
-        individual_test();
-	matrix_render();
+        matrix_raise();
+        matrix_bottom();
+        matrix_render();
 
         if ((ret = ws2811_render(&ledstring)) != WS2811_SUCCESS)
         {
